@@ -1,0 +1,64 @@
+<section class="chat-lab" id="ai-chat" aria-labelledby="chat-title">
+  <header class="chat-lab__intro" appReveal>
+    <p class="section-kicker">AI English Lab / Open conversation</p>
+    <h3 id="chat-title">Ask your<br /><em>learning partner.</em></h3>
+    <p>Questions are part of learning.<br />Ask about English — or ask how to learn it better.</p>
+  </header>
+
+  <div class="chat" appReveal>
+    @if (messages().length === 0) {
+      <div class="chat__welcome">
+        <p>What would you like to explore?</p>
+        <div class="chat__suggestions" aria-label="Suggested questions">
+          @for (suggestion of suggestions; track suggestion) {
+            <button type="button" [disabled]="isLoading()" (click)="useSuggestion(suggestion)">
+              {{ suggestion }}
+            </button>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="chat__conversation-nav">
+        <button type="button" class="chat__back" (click)="backToChoices()">
+          ← Back to choices
+        </button>
+      </div>
+      <div class="chat__history" #chatHistory aria-live="polite">
+        @for (message of messages(); track $index) {
+          <article class="chat-message" [class.chat-message--user]="message.role === 'user'">
+            <small>{{ message.role === 'assistant' ? 'Learning partner' : 'You' }}</small>
+            <p>{{ message.content }}</p>
+          </article>
+        }
+        @if (isLoading()) {
+          <article class="chat-message chat-message--thinking">
+            <small>Learning partner</small>
+            <p>Thinking with you<span aria-hidden="true">...</span></p>
+          </article>
+        }
+      </div>
+    }
+
+    <form class="chat__composer" (submit)="$event.preventDefault(); sendMessage()">
+      <label for="chat-question">Ask anything about English</label>
+      <div>
+        <textarea
+          id="chat-question"
+          rows="2"
+          maxlength="2000"
+          [value]="draft()"
+          [disabled]="isLoading()"
+          (input)="updateDraft($event)"
+          (keydown)="handleKeydown($event)"
+          placeholder="Ask anything about English..."
+        ></textarea>
+        <button type="submit" class="chat__send" [disabled]="!draft().trim() || isLoading()">
+          ASK →
+        </button>
+      </div>
+    </form>
+    @if (error()) {
+      <p class="chat__error" role="alert">{{ error() }}</p>
+    }
+  </div>
+</section>

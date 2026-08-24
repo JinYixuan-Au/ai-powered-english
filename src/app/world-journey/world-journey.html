@@ -20,7 +20,7 @@
   <div class="map-composition" appReveal>
     <svg
       class="world-map"
-      viewBox="0 0 1200 620"
+      viewBox="400 0 1200 620"
       role="img"
       aria-labelledby="map-name map-description"
     >
@@ -30,106 +30,51 @@
         Melbourne.
       </desc>
       <g class="graticule" aria-hidden="true">
-        <path d="M80 160H1120M45 260H1155M35 360H1165M80 460H1120" />
+        <path d="M480 160H1520M445 260H1555M435 360H1565M480 460H1520" />
         <path
-          d="M235 70C180 210 180 410 235 550M420 35C390 205 390 425 420 585M600 25V595M780 35C810 205 810 425 780 585M965 70C1020 210 1020 410 965 550"
+          d="M635 70C580 210 580 410 635 550M820 35C790 205 790 425 820 585M1000 25V595M1180 35C1210 205 1210 425 1180 585M1365 70C1420 210 1420 410 1365 550"
         />
-        <ellipse cx="600" cy="310" rx="565" ry="285" />
+        <ellipse cx="1000" cy="310" rx="565" ry="285" />
       </g>
       <g class="continents" aria-hidden="true">
-        <path
-          d="M112 184l42-53 71-29 78 10 38 37 57 18 35 52-28 39-55 4-20 43-37 18-18 62-38-8-28-59-44-29-9-44-43-22z"
-        />
-        <path d="M363 374l45 16 34 45-7 54-31 75-35 12-20-60-31-37 9-63z" />
-        <path
-          d="M524 151l43-31 49 13 38-20 102 13 57 37 77 2 83 47 61 11 40 45-46 34-62-7-39 23-53-18-34 25-44-24-44 17-54-40-49 14-43-28-65-8-31-39 31-39z"
-        />
-        <path d="M584 294l69 11 50 42 13 58-32 94-47 63-35-34-5-73-37-47-18-65z" />
-        <path d="M906 430l49-28 67 19 35 55-28 45-73 2-51-43z" />
+        @for (continent of continents; track continent.id) {
+          <path [attr.d]="continent.path" />
+        }
       </g>
       <g class="routes" aria-hidden="true">
-        <path pathLength="1" d="M942 207Q625 435 374 350" />
-        <path pathLength="1" d="M942 207Q770 90 600 156" />
-        <path pathLength="1" d="M942 207Q560 70 217 197" />
-        <path pathLength="1" d="M942 207Q925 175 914 193" />
-        <path pathLength="1" d="M942 207Q630 70 353 179" />
-        <path pathLength="1" d="M942 207Q770 95 607 164" />
-        <path pathLength="1" d="M942 207Q1025 300 1055 423" />
+        @for (route of routes; track route.id) {
+          <path pathLength="1" [attr.d]="route.path" [class.route--secondary]="route.secondary" />
+        }
       </g>
-      <g
-        class="location location--home"
-        tabindex="0"
-        role="img"
-        aria-label="Xi'an, China. You are here."
-      >
-        <circle class="location__ring" cx="942" cy="207" r="13" />
-        <circle class="location__point" cx="942" cy="207" r="4" />
-        <g class="location__label" transform="translate(960 191)">
-          <text>XI'AN · CHINA</text>
-          <text y="17">YOU ARE HERE</text>
+      @for (city of cities; track city.id) {
+        <g
+          [attr.class]="cityClass(city)"
+          tabindex="0"
+          role="img"
+          [attr.aria-label]="cityAriaLabel(city)"
+        >
+          <circle
+            class="location__ring"
+            [attr.cx]="city.x"
+            [attr.cy]="city.y"
+            [attr.r]="city.home ? 16 : city.secondary ? 8 : 10"
+          />
+          <circle
+            class="location__point"
+            [attr.cx]="city.x"
+            [attr.cy]="city.y"
+            [attr.r]="city.home ? 4.5 : city.secondary ? 2.75 : 3.5"
+          />
+          <g
+            class="location__label"
+            [class.location__label--left]="city.labelAlign === 'end'"
+            [attr.transform]="'translate(' + city.labelX + ' ' + city.labelY + ')'"
+          >
+            <text>{{ city.displayName ?? city.name }}</text>
+            <text y="17">{{ city.country }}</text>
+          </g>
         </g>
-      </g>
-      <g class="location location--1" tabindex="0" role="img" aria-label="Machu Picchu, Peru.">
-        <circle class="location__ring" cx="374" cy="350" r="10" />
-        <circle class="location__point" cx="374" cy="350" r="3.5" />
-        <g class="location__label" transform="translate(390 334)">
-          <text>MACHU PICCHU</text>
-          <text y="17">PERU</text>
-        </g>
-      </g>
-      <g class="location location--2" tabindex="0" role="img" aria-label="London, United Kingdom.">
-        <circle class="location__ring" cx="600" cy="156" r="10" />
-        <circle class="location__point" cx="600" cy="156" r="3.5" />
-        <g class="location__label" transform="translate(616 140)">
-          <text>LONDON</text>
-          <text y="17">UNITED KINGDOM</text>
-        </g>
-      </g>
-      <g
-        class="location location--3"
-        tabindex="0"
-        role="img"
-        aria-label="San Francisco, United States."
-      >
-        <circle class="location__ring" cx="217" cy="197" r="10" />
-        <circle class="location__point" cx="217" cy="197" r="3.5" />
-        <g class="location__label" transform="translate(233 181)">
-          <text>SAN FRANCISCO</text>
-          <text y="17">UNITED STATES</text>
-        </g>
-      </g>
-      <g class="location location--4" tabindex="0" role="img" aria-label="Zhangye, China.">
-        <circle class="location__ring" cx="914" cy="193" r="10" />
-        <circle class="location__point" cx="914" cy="193" r="3.5" />
-        <g class="location__label location__label--left" transform="translate(896 176)">
-          <text>ZHANGYE</text>
-          <text y="17">CHINA</text>
-        </g>
-      </g>
-      <g class="location location--5" tabindex="0" role="img" aria-label="Toronto, Canada.">
-        <circle class="location__ring" cx="353" cy="179" r="10" />
-        <circle class="location__point" cx="353" cy="179" r="3.5" />
-        <g class="location__label" transform="translate(369 163)">
-          <text>TORONTO</text>
-          <text y="17">CANADA</text>
-        </g>
-      </g>
-      <g class="location location--6" tabindex="0" role="img" aria-label="Paris, France.">
-        <circle class="location__ring" cx="607" cy="164" r="10" />
-        <circle class="location__point" cx="607" cy="164" r="3.5" />
-        <g class="location__label" transform="translate(623 185)">
-          <text>PARIS</text>
-          <text y="17">FRANCE</text>
-        </g>
-      </g>
-      <g class="location location--7" tabindex="0" role="img" aria-label="Melbourne, Australia.">
-        <circle class="location__ring" cx="1055" cy="423" r="10" />
-        <circle class="location__point" cx="1055" cy="423" r="3.5" />
-        <g class="location__label location__label--left" transform="translate(1039 446)">
-          <text>MELBOURNE</text>
-          <text y="17">AUSTRALIA</text>
-        </g>
-      </g>
+      }
     </svg>
     <div class="map-caption">
       <span>34°16' N — 108°56' E</span><span>Places · Cultures · Perspectives</span>
@@ -137,13 +82,13 @@
   </div>
 
   <ol class="place-index" aria-label="World destinations" appReveal>
-    <li><span>01</span><strong>Machu Picchu</strong><small>Peru</small></li>
-    <li><span>02</span><strong>London</strong><small>United Kingdom</small></li>
-    <li><span>03</span><strong>San Francisco</strong><small>United States</small></li>
-    <li><span>04</span><strong>Zhangye</strong><small>China</small></li>
-    <li><span>05</span><strong>Toronto</strong><small>Canada</small></li>
-    <li><span>06</span><strong>Paris</strong><small>France</small></li>
-    <li><span>07</span><strong>Melbourne</strong><small>Australia</small></li>
+    @for (city of destinations; track city.id) {
+      <li>
+        <span>{{ city.index }}</span>
+        <strong>{{ city.name }}</strong>
+        <small>{{ city.country }}</small>
+      </li>
+    }
   </ol>
 </section>
 

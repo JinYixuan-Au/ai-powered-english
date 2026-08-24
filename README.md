@@ -1,59 +1,53 @@
-# SeniorHighEnglish
+# Senior High English
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
+Angular first-lesson experience with EdgeOne server-side Qwen learning endpoints.
 
-## Development server
+## Architecture
 
-To start a local development server, run:
+The Starter Coach sends a student's three reflections to `POST /api/ai-feedback`. The separate conversational Learning Partner sends a bounded, in-memory message history to `POST /api/chat`. Both EdgeOne functions read `QWEN_API_KEY` server-side and call the Singapore-region Alibaba Cloud Model Studio OpenAI-compatible endpoint using `qwen-flash`. The API key is never included in the Angular bundle.
 
-```bash
-ng serve
-```
+## Local development
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. Install dependencies:
 
-## Code scaffolding
+   ```bash
+   npm install
+   ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2. Install and sign in to the EdgeOne CLI:
 
-```bash
-ng generate component component-name
-```
+   ```bash
+   npm install -g edgeone
+   edgeone login
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. Copy the environment template and add a Singapore-region Model Studio key:
 
-```bash
-ng generate --help
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-## Building
+   `.env` is ignored by Git. Never commit the real key.
 
-To build the project run:
+4. If this checkout has not been associated with the deployed Makers project, link it once:
 
-```bash
-ng build
-```
+   ```bash
+   edgeone makers link
+   ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+5. Start the unified Angular and Functions development server:
 
-## Running unit tests
+   ```bash
+   edgeone makers dev
+   ```
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+   Open `http://localhost:8088`. The Starter Coach and chatbot will call the local
+   `/api/ai-feedback` and `/api/chat` functions respectively.
 
-```bash
-ng test
-```
+Standard frontend-only checks remain available through `npm test` and `npm run build`, but `ng serve` alone does not emulate the EdgeOne API function.
 
-## Running end-to-end tests
+## EdgeOne deployment
 
-For end-to-end (e2e) testing, run:
+In the EdgeOne Makers project, open **Project Settings → Environment Management** and add `QWEN_API_KEY` as a secret for Production and Preview as needed. Redeploy after saving it. EdgeOne injects the secret into the function's `context.env`; the function reads it as `env.QWEN_API_KEY`.
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The existing Git deployment flow automatically deploys the Angular output and the `edge-functions` directory together.

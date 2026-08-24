@@ -31,6 +31,9 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+.env
+.env.*
+!.env.example
 .sass-cache/
 /connect.lock
 /coverage
@@ -42,3 +45,9 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+.tef_dist/*
+  

@@ -113,6 +113,7 @@ h2 em {
   fill: rgba(111, 141, 146, 0.08);
   stroke: rgba(69, 96, 101, 0.38);
   stroke-width: 1.05;
+  stroke-linejoin: round;
 }
 .routes {
   fill: none;
@@ -120,6 +121,9 @@ h2 em {
   stroke-width: 1;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
+}
+.routes .route--secondary {
+  stroke: rgba(143, 47, 52, 0.2);
 }
 .map-composition.is-visible .routes path {
   animation: draw-route 1.4s ease forwards;
@@ -192,6 +196,16 @@ h2 em {
 }
 .location__label--left {
   text-anchor: end;
+}
+.location--secondary .location__ring {
+  fill: rgba(143, 47, 52, 0.035);
+  stroke: rgba(143, 47, 52, 0.25);
+}
+.location--secondary .location__point {
+  fill: var(--brick-soft);
+}
+.location--secondary .location__label {
+  opacity: 0.58;
 }
 .location:hover .location__ring,
 .location:focus .location__ring {
@@ -312,8 +326,17 @@ h2 em {
     border-inline: 0;
   }
   .world-map {
-    min-width: 48rem;
-    transform: translateX(-18%);
+    width: 40rem;
+    max-width: none;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  .location__label {
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  .location__label text:last-child {
+    font-size: 10px;
   }
   .map-caption span:last-child {
     display: none;

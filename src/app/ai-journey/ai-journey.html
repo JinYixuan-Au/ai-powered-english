@@ -43,48 +43,166 @@
   <div class="lab" appReveal aria-labelledby="lab-title">
     <div class="lab__intro">
       <p class="section-kicker">Prototype / AI English Lab</p>
-      <h3 id="lab-title">A coach for<br /><em>your reasoning.</em></h3>
-      <p>This is a visual prototype. A real learning interaction can be connected here later.</p>
+      <h3 id="lab-title">Meet your<br /><em>learning partner.</em></h3>
+      <p>
+        Everyone starts senior high English from a different place.<br />Let AI help you discover
+        yours.
+      </p>
     </div>
 
-    <div class="lab__dialogue">
-      <div class="message message--question">
-        <small>Reading question</small>
-        <p>Which sentence best expresses the writer’s main idea?</p>
-        <div class="answers" role="group" aria-label="Choose an answer">
-          @for (answer of ['A', 'B', 'C']; track answer) {
+    <div class="lab__experience" aria-live="polite" [attr.aria-busy]="isLoading()">
+      @if (result(); as startingPoint) {
+        <section class="starting-point">
+          <p class="starting-point__eyebrow">Your starting point</p>
+          <div class="starting-point__row">
+            <strong>Keep</strong>
+            <p>{{ startingPoint.strength }}</p>
+          </div>
+          <div class="starting-point__row">
+            <strong>Shift</strong>
+            <p>{{ startingPoint.shift }}</p>
+          </div>
+          <div class="starting-point__row">
+            <strong>Start</strong>
+            <p>{{ startingPoint.habit }}</p>
+          </div>
+          <p class="starting-point__closing">{{ startingPoint.encouragement }}</p>
+          <button type="button" class="text-button" (click)="revisitAnswers()">
+            Revisit my answers
+          </button>
+        </section>
+      } @else {
+        <div class="starter-progress" aria-label="Question progress">
+          <span>0{{ step() + 1 }} / 03</span>
+          <div aria-hidden="true">
+            @for (marker of [0, 1, 2]; track marker) {
+              <i [class.is-active]="marker <= step()"></i>
+            }
+          </div>
+        </div>
+
+        @switch (step()) {
+          @case (0) {
+            <section class="starter-question">
+              <p class="starter-question__label">Your strength</p>
+              <h4>What are you already confident about in English?</h4>
+              <p class="starter-question__hint">Choose one or more.</p>
+              <div class="starter-options">
+                @for (option of strengthOptions; track option) {
+                  <button
+                    type="button"
+                    class="starter-option strength-option"
+                    [class.is-selected]="strengths().includes(option)"
+                    [attr.aria-pressed]="strengths().includes(option)"
+                    (click)="toggleStrength(option)"
+                  >
+                    {{ option }}
+                  </button>
+                }
+              </div>
+            </section>
+          }
+          @case (1) {
+            <section class="starter-question">
+              <p class="starter-question__label">Your challenge</p>
+              <h4>What worries you most about senior high English?</h4>
+              <div class="starter-options">
+                @for (option of challengeOptions; track option) {
+                  <button
+                    type="button"
+                    class="starter-option challenge-option"
+                    [class.is-selected]="challenge() === option"
+                    [attr.aria-pressed]="challenge() === option"
+                    (click)="selectChallenge(option)"
+                  >
+                    {{ option }}
+                  </button>
+                }
+              </div>
+              <label class="starter-custom" for="challenge-detail">
+                <span>Or add your own thought</span>
+                <input
+                  id="challenge-detail"
+                  maxlength="240"
+                  [value]="challengeDetail()"
+                  (input)="updateChallengeDetail($event)"
+                />
+              </label>
+            </section>
+          }
+          @case (2) {
+            <section class="starter-question">
+              <p class="starter-question__label">Your destination</p>
+              <h4>Where do you hope English can take you?</h4>
+              <div class="starter-options">
+                @for (option of destinationOptions; track option) {
+                  <button
+                    type="button"
+                    class="starter-option destination-option"
+                    [class.is-selected]="destination() === option"
+                    [attr.aria-pressed]="destination() === option"
+                    (click)="selectDestination(option)"
+                  >
+                    {{ option }}
+                  </button>
+                }
+              </div>
+              <label class="starter-custom" for="destination-detail">
+                <span>Or name somewhere else</span>
+                <input
+                  id="destination-detail"
+                  maxlength="240"
+                  [value]="destinationDetail()"
+                  (input)="updateDestinationDetail($event)"
+                />
+              </label>
+            </section>
+          }
+        }
+
+        <div class="starter-actions">
+          @if (step() > 0) {
             <button
               type="button"
-              [class.is-selected]="selectedAnswer() === answer"
-              (click)="selectedAnswer.set(answer); hasExplained.set(false)"
+              class="text-button"
+              [disabled]="isLoading()"
+              (click)="previousStep()"
             >
-              {{ answer }}
+              ← Back
+            </button>
+          } @else {
+            <span></span>
+          }
+          @if (step() < 2) {
+            <button
+              type="button"
+              class="step-next"
+              [disabled]="!canContinue()"
+              (click)="nextStep()"
+            >
+              Continue →
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="discover-button"
+              [disabled]="!canContinue() || isLoading()"
+              (click)="discoverStartingPoint()"
+            >
+              {{
+                isLoading() ? 'Getting to know how you learn...' : 'DISCOVER MY STARTING POINT →'
+              }}
             </button>
           }
         </div>
-      </div>
-
-      <div class="message message--coach" aria-live="polite">
-        <small>Learning partner</small>
-        @if (!hasExplained()) {
-          <p>
-            You chose {{ selectedAnswer() }}. What evidence in the passage supports your choice?
-          </p>
-          <button type="button" class="reason-button" (click)="hasExplained.set(true)">
-            Explain my reasoning →
-          </button>
-        } @else {
-          <p>
-            Good start. Now connect that evidence to the writer’s purpose. What does it help the
-            reader understand?
-          </p>
-          <button type="button" class="reason-button" (click)="hasExplained.set(false)">
-            Think again ↺
-          </button>
+        @if (error()) {
+          <p class="lab__error" role="alert">{{ error() }}</p>
         }
-      </div>
+      }
     </div>
   </div>
+
+  <app-ai-chat />
 
   <blockquote appReveal>
     AI should not replace thinking.<br /><em>It should make thinking more visible.</em>
