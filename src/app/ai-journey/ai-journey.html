@@ -1,0 +1,92 @@
+<section class="new-tool" aria-labelledby="new-tool-title">
+  <div class="new-tool__lines" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="new-tool__copy" appReveal>
+    <p>And now, you have something<br />learners before you didn’t.</p>
+    <h2 id="new-tool-title">AI</h2>
+    <strong>But what should AI do for you?</strong>
+  </div>
+</section>
+
+<section class="ai-partner" aria-labelledby="partner-title">
+  <header class="ai-partner__header" appReveal>
+    <p class="section-kicker">05–06 / A new tool for a new journey</p>
+    <div class="equation">
+      <p><span>AI</span><b>≠</b> Answer Machine</p>
+      <p><span>AI</span><b>=</b> Learning Partner</p>
+    </div>
+    <h2 id="partner-title">Thinking remains<br /><em>yours.</em></h2>
+  </header>
+
+  <div class="partner-roles" appReveal>
+    <article>
+      <span>01</span>
+      <h3>Understand</h3>
+      <p>Explain why something works.</p>
+    </article>
+    <article>
+      <span>02</span>
+      <h3>Find evidence</h3>
+      <p>Ask you to support an answer.</p>
+    </article>
+    <article>
+      <span>03</span>
+      <h3>Improve expression</h3>
+      <p>Give feedback without taking over.</p>
+    </article>
+    <article>
+      <span>04</span>
+      <h3>Reflect</h3>
+      <p>Help you understand a mistake.</p>
+    </article>
+  </div>
+
+  <div class="lab" appReveal aria-labelledby="lab-title">
+    <div class="lab__intro">
+      <p class="section-kicker">Prototype / AI English Lab</p>
+      <h3 id="lab-title">A coach for<br /><em>your reasoning.</em></h3>
+      <p>This is a visual prototype. A real learning interaction can be connected here later.</p>
+    </div>
+
+    <div class="lab__dialogue">
+      <div class="message message--question">
+        <small>Reading question</small>
+        <p>Which sentence best expresses the writer’s main idea?</p>
+        <div class="answers" role="group" aria-label="Choose an answer">
+          @for (answer of ['A', 'B', 'C']; track answer) {
+            <button
+              type="button"
+              [class.is-selected]="selectedAnswer() === answer"
+              (click)="selectedAnswer.set(answer); hasExplained.set(false)"
+            >
+              {{ answer }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="message message--coach" aria-live="polite">
+        <small>Learning partner</small>
+        @if (!hasExplained()) {
+          <p>
+            You chose {{ selectedAnswer() }}. What evidence in the passage supports your choice?
+          </p>
+          <button type="button" class="reason-button" (click)="hasExplained.set(true)">
+            Explain my reasoning →
+          </button>
+        } @else {
+          <p>
+            Good start. Now connect that evidence to the writer’s purpose. What does it help the
+            reader understand?
+          </p>
+          <button type="button" class="reason-button" (click)="hasExplained.set(false)">
+            Think again ↺
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <blockquote appReveal>
+    AI should not replace thinking.<br /><em>It should make thinking more visible.</em>
+  </blockquote>
+</section>

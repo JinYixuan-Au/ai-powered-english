@@ -1,37 +1,32 @@
-<main>
+<main id="top">
   <section class="opening" aria-labelledby="opening-title">
     <div class="opening__stage">
-      <div class="opening__atmosphere" aria-hidden="true">
-        <span class="opening__glow"></span>
-        <span class="opening__horizon"></span>
-        <span class="opening__line opening__line--one"></span>
-        <span class="opening__line opening__line--two"></span>
+      <div class="campus-lines" aria-hidden="true">
+        <span class="campus-lines__frame"></span>
+        <span class="campus-lines__walkway"></span>
+        <span class="campus-lines__sun"></span>
       </div>
-
-      <header class="masthead reveal reveal--school">
-        <span class="masthead__mark" aria-hidden="true">J</span>
+      <header class="masthead entrance entrance--identity">
+        <span class="masthead__seal" aria-hidden="true">J</span>
         <p>The High School Affiliated to Xi'an Jiaotong University</p>
+        <span class="masthead__year">Senior High English · 2026</span>
       </header>
-
       <div class="opening__content">
-        <p class="eyebrow reveal reveal--eyebrow">Your journey starts here.</p>
-        <h1 id="opening-title" class="reveal reveal--title">
-          Welcome to<br />
-          <span>Senior High School.</span>
+        <p class="opening__eyebrow entrance entrance--eyebrow">Your journey starts here.</p>
+        <h1 id="opening-title" class="entrance entrance--title">
+          Welcome to<br /><em>Senior High School.</em>
         </h1>
-        <p class="opening__statement reveal reveal--statement">
-          Your English journey begins here.
-        </p>
+        <p class="opening__support entrance entrance--support">Your English journey begins here.</p>
       </div>
-
-      <a class="journey-link reveal reveal--cta" href="#world-intro">
-        <span>Begin the Journey</span>
-        <span class="journey-link__arrow" aria-hidden="true">↓</span>
-      </a>
-
-      <div class="opening__transition" aria-hidden="true"></div>
+      <a class="journey-link entrance entrance--cta" href="#world-intro"
+        ><span>Begin the Journey</span><span aria-hidden="true">↓</span></a
+      >
+      <div class="opening__chapter" aria-hidden="true">01</div>
     </div>
   </section>
-
   <app-world-journey />
+  <app-learning-shifts />
+  <app-learning-habits />
+  <app-ai-journey />
+  <app-closing-journey />
 </main>

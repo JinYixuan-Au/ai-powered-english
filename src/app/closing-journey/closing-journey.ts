@@ -3,8 +3,8 @@ import { RevealOnScroll } from '../shared/reveal-on-scroll.directive';
 
 @Component({
   imports: [RevealOnScroll],
-  selector: 'app-world-journey',
-  styleUrl: './world-journey.scss',
-  templateUrl: './world-journey.html',
+  selector: 'app-closing-journey',
+  styleUrl: './closing-journey.scss',
+  templateUrl: './closing-journey.html',
 })
-export class WorldJourney {}
+export class ClosingJourney {}

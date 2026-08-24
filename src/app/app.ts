@@ -1,8 +1,12 @@
 import { AfterViewInit, Component, DestroyRef, ElementRef, NgZone, inject } from '@angular/core';
 import { WorldJourney } from './world-journey/world-journey';
+import { LearningShifts } from './learning-shifts/learning-shifts';
+import { LearningHabits } from './learning-habits/learning-habits';
+import { AiJourney } from './ai-journey/ai-journey';
+import { ClosingJourney } from './closing-journey/closing-journey';
 
 @Component({
-  imports: [WorldJourney],
+  imports: [WorldJourney, LearningShifts, LearningHabits, AiJourney, ClosingJourney],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -14,7 +18,8 @@ export class App implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const opening = this.elementRef.nativeElement.querySelector<HTMLElement>('.opening');
-    const reducedMotion = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion =
+      typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!opening || reducedMotion) return;
 
     let frame = 0;
