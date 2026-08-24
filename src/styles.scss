@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --ink: #080d11;
+  --deep-blue: #0c151b;
+  --paper: #f1f0ea;
+  --mist: #aeb8ba;
+  --accent: #91aeb5;
+  --accent-light: #cadadd;
+  --line: rgba(235, 240, 236, 0.22);
+  --page-gutter: clamp(1.35rem, 5vw, 6rem);
+  --display-font: Georgia, 'Times New Roman', serif;
+  --body-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+  font-family: var(--body-font);
+  font-synthesis: none;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ink);
+}
+
+body {
+  margin: 0;
+  min-width: 20rem;
+  background: var(--ink);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 0.3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
