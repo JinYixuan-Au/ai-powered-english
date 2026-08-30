@@ -1,0 +1,74 @@
+<ng-template #renderSegments let-segments>
+  @for (segment of segments; track $index) {
+    @if (segment.bold && segment.italic) {
+      <strong
+        ><em>{{ segment.text }}</em></strong
+      >
+    } @else if (segment.bold) {
+      <strong>{{ segment.text }}</strong>
+    } @else if (segment.italic) {
+      <em>{{ segment.text }}</em>
+    } @else {
+      <span>{{ segment.text }}</span>
+    }
+  }
+</ng-template>
+
+<ng-template #renderList let-list>
+  @if (list.ordered) {
+    <ol>
+      @for (item of list.items; track $index) {
+        <li>
+          <ng-container
+            [ngTemplateOutlet]="renderSegments"
+            [ngTemplateOutletContext]="{ $implicit: item.content }"
+          />
+          @for (child of item.children; track $index) {
+            <ng-container
+              [ngTemplateOutlet]="renderList"
+              [ngTemplateOutletContext]="{ $implicit: child }"
+            />
+          }
+        </li>
+      }
+    </ol>
+  } @else {
+    <ul>
+      @for (item of list.items; track $index) {
+        <li>
+          <ng-container
+            [ngTemplateOutlet]="renderSegments"
+            [ngTemplateOutletContext]="{ $implicit: item.content }"
+          />
+          @for (child of item.children; track $index) {
+            <ng-container
+              [ngTemplateOutlet]="renderList"
+              [ngTemplateOutletContext]="{ $implicit: child }"
+            />
+          }
+        </li>
+      }
+    </ul>
+  }
+</ng-template>
+
+@for (block of blocks(); track $index) {
+  @if (block.type === 'paragraph') {
+    <p>
+      @for (line of block.lines; track $index; let isLast = $last) {
+        <ng-container
+          [ngTemplateOutlet]="renderSegments"
+          [ngTemplateOutletContext]="{ $implicit: line }"
+        />
+        @if (!isLast) {
+          <br />
+        }
+      }
+    </p>
+  } @else {
+    <ng-container
+      [ngTemplateOutlet]="renderList"
+      [ngTemplateOutletContext]="{ $implicit: block.list }"
+    />
+  }
+}

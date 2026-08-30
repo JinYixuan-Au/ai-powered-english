@@ -329,7 +329,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.starting-point__row p {
+.starting-point__row app-basic-markdown {
   margin: 0;
   font-family: var(--display-font);
   font-size: clamp(1.1rem, 1.7vw, 1.5rem);

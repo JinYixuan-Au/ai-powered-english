@@ -51,3 +51,5 @@ Thumbs.db
 .edgeone/*
 .tef_dist/*
   
+.vercel
+.env*

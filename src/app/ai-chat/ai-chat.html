@@ -27,7 +27,11 @@
         @for (message of messages(); track $index) {
           <article class="chat-message" [class.chat-message--user]="message.role === 'user'">
             <small>{{ message.role === 'assistant' ? 'Learning partner' : 'You' }}</small>
-            <p>{{ message.content }}</p>
+            @if (message.role === 'assistant') {
+              <app-basic-markdown [text]="message.content" />
+            } @else {
+              <p>{{ message.content }}</p>
+            }
           </article>
         }
         @if (isLoading()) {

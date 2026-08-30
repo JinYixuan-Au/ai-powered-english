@@ -1,4 +1,5 @@
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
+import { BasicMarkdown } from '../shared/basic-markdown/basic-markdown';
 import { RevealOnScroll } from '../shared/reveal-on-scroll.directive';
 
 interface ChatMessage {
@@ -7,7 +8,7 @@ interface ChatMessage {
 }
 
 @Component({
-  imports: [RevealOnScroll],
+  imports: [BasicMarkdown, RevealOnScroll],
   selector: 'app-ai-chat',
   styleUrl: './ai-chat.scss',
   templateUrl: './ai-chat.html',

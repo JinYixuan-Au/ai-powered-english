@@ -56,17 +56,20 @@
           <p class="starting-point__eyebrow">Your starting point</p>
           <div class="starting-point__row">
             <strong>Keep</strong>
-            <p>{{ startingPoint.strength }}</p>
+            <app-basic-markdown [text]="startingPoint.strength" />
           </div>
           <div class="starting-point__row">
             <strong>Shift</strong>
-            <p>{{ startingPoint.shift }}</p>
+            <app-basic-markdown [text]="startingPoint.shift" />
           </div>
           <div class="starting-point__row">
             <strong>Start</strong>
-            <p>{{ startingPoint.habit }}</p>
+            <app-basic-markdown [text]="startingPoint.habit" />
           </div>
-          <p class="starting-point__closing">{{ startingPoint.encouragement }}</p>
+          <app-basic-markdown
+            class="starting-point__closing"
+            [text]="startingPoint.encouragement"
+          />
           <button type="button" class="text-button" (click)="revisitAnswers()">
             Revisit my answers
           </button>

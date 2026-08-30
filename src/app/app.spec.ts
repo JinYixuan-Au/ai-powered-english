@@ -80,7 +80,7 @@ describe('App', () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(
         JSON.stringify({
-          strength: 'Your confidence with vocabulary gives you a useful foundation.',
+          strength: '**Vocabulary** gives you a useful foundation.',
           shift: 'Move from remembering meanings to noticing how words work in context.',
           habit: 'Save one complete sentence each time you learn a new word.',
           encouragement: 'This is a strong place to begin.',
@@ -120,6 +120,10 @@ describe('App', () => {
     expect(compiled.querySelector('.starting-point')?.textContent).toContain(
       'Move from remembering meanings to noticing how words work in context.',
     );
+    expect(compiled.querySelector('.starting-point app-basic-markdown strong')?.textContent).toBe(
+      'Vocabulary',
+    );
+    expect(compiled.querySelector('.starting-point')?.textContent).not.toContain('**');
     vi.unstubAllGlobals();
   });
 
@@ -140,9 +144,9 @@ describe('App', () => {
 
   it('should keep context across three chatbot turns', async () => {
     const replies = [
-      'Historic describes something important in history; historical describes something related to history.',
-      'For example, a historic decision can change a country, while a historical novel is set in the past.',
-      'Try this: The signing of the agreement was a historic event.',
+      'Historic describes something important in history; historical describes something related to history. <img src=x onerror=alert(1)>',
+      '1. **READ** – Read the text carefully.\n\n2. **NOTICE** – After reading, pause and ask:\n\n   - What is the author’s purpose?\n   - What key details support the main idea?\n   - What words or phrases stand out?\n\n3. **USE** – Use what you noticed.\n\n4. **REFLECT** – Think about what worked.',
+      '**READ**\n- First point\n- Second point\n\n💡 *Example:* Notice how the writer uses strong words.\n\n👉 *Thinking question:* What detail supports the author’s tone?',
     ];
     const fetchMock = vi.fn().mockImplementation(
       async () =>
@@ -186,9 +190,27 @@ describe('App', () => {
       'assistant',
       'user',
     ]);
-    expect(compiled.querySelector('.chat__history')?.textContent).toContain(
-      'The signing of the agreement was a historic event.',
-    );
+    const formattedResponses = [
+      ...compiled.querySelectorAll<HTMLElement>(
+        '.chat-message:not(.chat-message--user) app-basic-markdown',
+      ),
+    ];
+    expect(formattedResponses[0].querySelector('img')).toBeNull();
+    const orderedList = formattedResponses[1].querySelector('ol');
+    const nestedList = orderedList?.children.item(1)?.querySelector('ul');
+    expect(formattedResponses[1].querySelectorAll('ol')).toHaveLength(1);
+    expect(orderedList?.children).toHaveLength(4);
+    expect(nestedList?.children).toHaveLength(3);
+    expect(orderedList?.children.item(0)?.querySelector('strong')?.textContent).toBe('READ');
+    expect(orderedList?.children.item(1)?.querySelector('strong')?.textContent).toBe('NOTICE');
+    expect(orderedList?.children.item(2)?.querySelector('strong')?.textContent).toBe('USE');
+    expect(orderedList?.children.item(3)?.querySelector('strong')?.textContent).toBe('REFLECT');
+    expect(formattedResponses[2].querySelector('strong')?.textContent).toBe('READ');
+    expect(formattedResponses[2].querySelectorAll('ul li')).toHaveLength(2);
+    expect(
+      [...formattedResponses[2].querySelectorAll('em')].map((item) => item.textContent),
+    ).toEqual(['Example:', 'Thinking question:']);
+    expect(formattedResponses[2].textContent).not.toContain('*');
     expect(compiled.querySelector('#lab-title')?.textContent).toContain('Meet your');
     vi.unstubAllGlobals();
   });

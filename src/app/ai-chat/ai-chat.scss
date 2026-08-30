@@ -129,11 +129,15 @@
   text-transform: uppercase;
 }
 
-.chat-message p {
+.chat-message > p,
+.chat-message app-basic-markdown {
   margin: 0.6rem 0 0;
   color: var(--ink);
   font-size: clamp(0.95rem, 1.3vw, 1.08rem);
   line-height: 1.65;
+}
+
+.chat-message > p {
   white-space: pre-wrap;
 }
 
@@ -148,7 +152,7 @@
   color: var(--warm-grey);
 }
 
-.chat-message--thinking p {
+.chat-message--thinking > p {
   color: var(--warm-grey);
   font-family: var(--display-font);
   font-style: italic;

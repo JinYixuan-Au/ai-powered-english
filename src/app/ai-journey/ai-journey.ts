@@ -1,5 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { AiChat } from '../ai-chat/ai-chat';
+import { BasicMarkdown } from '../shared/basic-markdown/basic-markdown';
 import { RevealOnScroll } from '../shared/reveal-on-scroll.directive';
 
 interface StartingPoint {
@@ -10,7 +11,7 @@ interface StartingPoint {
 }
 
 @Component({
-  imports: [AiChat, RevealOnScroll],
+  imports: [AiChat, BasicMarkdown, RevealOnScroll],
   selector: 'app-ai-journey',
   styleUrl: './ai-journey.scss',
   templateUrl: './ai-journey.html',
